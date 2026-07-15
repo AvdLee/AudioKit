@@ -4,7 +4,10 @@ import AVFoundation
 
 extension AVAudioNode {
     var audioKitAudioUnit: AUAudioUnit {
-        guard let audioUnit = value(forKey: "auAudioUnit") as? AUAudioUnit else {
+        let selector = NSSelectorFromString("AUAudioUnit")
+        guard responds(to: selector),
+              let result = perform(selector),
+              let audioUnit = result.takeUnretainedValue() as? AUAudioUnit else {
             fatalError("Expected AVAudioNode to provide an AUAudioUnit.")
         }
         return audioUnit
